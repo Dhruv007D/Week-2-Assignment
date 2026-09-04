@@ -1,0 +1,71 @@
+# Week-2-Assignment
+
+1.Train Logistic Regression Model
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, accuracy_score
+
+# Load dataset
+df = pd.read_csv("Titanic_cleaned.csv")
+
+# Features and target
+X = df.drop("Survived", axis=1)
+y = df["Survived"]
+
+# Train/test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Logistic Regression
+log_reg = LogisticRegression(max_iter=500)
+log_reg.fit(X_train, y_train)
+
+# Predictions
+y_pred = log_reg.predict(X_test)
+
+2.Confusion Matrix & Accuracy
+
+# Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:\n", cm)
+
+# Accuracy
+acc = accuracy_score(y_test, y_pred)
+print("Logistic Regression Accuracy:", acc)
+
+3.Compare Decision Tree vs KNN
+
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+
+# Decision Tree
+dt = DecisionTreeClassifier(random_state=42)
+dt.fit(X_train, y_train)
+dt_acc = accuracy_score(y_test, dt.predict(X_test))
+
+# KNN
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train, y_train)
+knn_acc = accuracy_score(y_test, knn.predict(X_test))
+
+print("Decision Tree Accuracy:", dt_acc)
+print("KNN Accuracy:", knn_acc)
+
+4.Tune Decision Tree
+
+# Shallow tree
+dt_shallow = DecisionTreeClassifier(max_depth=3, random_state=42)
+dt_shallow.fit(X_train, y_train)
+shallow_acc = accuracy_score(y_test, dt_shallow.predict(X_test))
+
+# Deeper tree
+dt_deep = DecisionTreeClassifier(max_depth=10, random_state=42)
+dt_deep.fit(X_train, y_train)
+deep_acc = accuracy_score(y_test, dt_deep.predict(X_test))
+
+print("Decision Tree Accuracy (max_depth=3):", shallow_acc)
+print("Decision Tree Accuracy (max_depth=10):", deep_acc)
+
+
+
